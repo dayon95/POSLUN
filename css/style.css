@@ -1,0 +1,34 @@
+body.white{
+  background-color: white;
+  color:black;
+}
+body.black{
+  background-color: black;
+  color:white;
+}
+header {
+  border-bottom:1px solid gray;
+  padding:20px;
+}
+nav {
+  border-right: 1px solid gray;
+  width:200px;
+  height: 300px;
+  float:left;
+}
+/*nav tag 밑에 있는 ol tag 지정*/
+nav ol{
+  list-style: none;
+}
+article {
+  float:left;
+  padding:20px;
+}
+#control{
+  float: right;
+}
+header img{
+  float:right;
+  width:200px;
+  height:100px;
+}

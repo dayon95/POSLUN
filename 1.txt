@@ -1,0 +1,2 @@
+<h2>Javascript란?</h2>
+Javascript란 html을 제어하는 언어입니다.

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+  <style>
+  .one{
+    text-decoration: underline;
+  }
+  </style>
+
+</head>
+<body>
+  <!--input type에는 text, button, checkbox가 있다-->
+  <input type="text" id="user_input"/>
+  <input type="button" value="white"
+  onclick="alert(document.getElementById('user_input').value)"/>
+  <ol id="target">
+    <li class="one">html</li>
+    <li>css</li>
+    <li>javascript</li>
+  </ol>
+  <ul class="one">
+    <li>김다연</li>
+    <li>강병민</li>
+    <li>박예진</li>
+    <li>채종혁</li>
+  </ul>
+  <input type="button" value="강조" onclick="document.getElementById('target').className='one'" />
+</body>
+</html>
