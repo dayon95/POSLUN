@@ -7,16 +7,12 @@
       <h1><a href="">Dayeon's Blog</a></h1>
     </div>
 
+    {% for post in posts %}
     <div>
-      <p>published: 09.11.2017, 23:16</p>
-      <h2><a href="">My first post</a></h2>
-      <p>인생은 살기 어렵다는데, 시가 이렇게 쉽게 씌어지는 것은 부끄러운 일이다.</p>
+      <p>published: {{post.published_date}}</p>
+      <h1><a href="">{{post.title}}</a></h1>
+      <p>{{post.text|linebreaksbr}}</p>
     </div>
-
-    <div>
-      <p>published: 09.11.2017, 23:17</p>
-      <h2><a href="">My second post</a></h2>
-      <p>이 정도면 코딩 중독?</p>
-    </div>
+    {% endfor %}
   </body>
 </html>
