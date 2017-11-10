@@ -5,6 +5,7 @@
  */
 @import url('https://fonts.googleapis.com/css?family=Arvo');
 body {
+  font-family:"Jeju Gothic";
   padding-top: 54px;
 }
 /*카테고리 텍스트 색깔*/
@@ -22,11 +23,7 @@ a.list-group-item{
 .row-centered{
   text-align: center;
 }
-/*.col-centered{
-  float: none;
-  margin-right:auto;
-  margin-left:auto;
-}*/
+
 header.masthead {
   background: url('https://unsplash.it/1900/1080?image=304') no-repeat center center scroll;
   -webkit-background-size: cover;
