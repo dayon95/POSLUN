@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from data01.model import PosterData
+from data01.models import PosterData
 
 # Create your views here.
 
