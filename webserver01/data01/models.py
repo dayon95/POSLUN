@@ -41,11 +41,3 @@ class pd1_time(models.Model): #하루행사 시간
 
     def __str__(self):
         return self.title
-
-'''class pd1_time_sort(django_filters.FilterSet):
-    orderdate = pd1_time.objects.order_by('date')
-
-    class Meta:
-        model = pd1_time
-        fields = ['date', ]
-'''

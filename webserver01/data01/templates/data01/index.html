@@ -1,0 +1,22 @@
+<html>
+  <head>
+
+  </head>
+  <body>
+    <h1>오늘의 행사</h1>
+    <div>
+      <!--
+      {% for pd1_time in contents.today_list %}
+
+      title={{pd1_time.name}}
+      <br />
+      {% endfor %}
+      -->
+      {% for pd1_time in today_list %}
+      title = {{pd1_time.title}}
+      <br/>
+      {% endfor %}
+    </div>
+    <h1>금주의 행사</h1>
+  </body>
+</html>
