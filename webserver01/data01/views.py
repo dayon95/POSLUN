@@ -41,4 +41,20 @@ def about(request):
 '''
 
 def index(request):
-    return render(request,'data01/index.html')
+    today=datetime.today()
+    tomorrow=today+timedelta(days=1)
+    this_week=today.isocalendar()[1]
+    date_KOR=["월","화","수","목","금","토","일"]
+    date=date_KOR[today.weekday()]
+    #start date와 end date 사이 값에 today, tomorrow, this_week중 하나라도 포함되면 list에 포함시켜야함
+    #테스트용으로 startdate만으로 비교해볼것.
+    today_list=pd2.objects.filter(startdate__year=today.year, startdate__month=today.month, startdate__day=today.day)
+    tomorrow_list=pd2.objects.filter(startdate__year=tomorrow.year, startdate__month=tomorrow.month, startdate__day=tomorrow.day)
+
+    this_week_list=pd2.objects.filter(startdate__week=this_week)
+    contents={'date':date, 'today_list':today_list,'tomorrow_list':tomorrow_list,'this_week_list':this_week_list}
+    return render(request,'data01/index.html',contents)
+'''
+def category(request, kind):
+    return render(request,'카테고리에 따른 포스터')
+'''
