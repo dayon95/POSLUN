@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from data01.models import PosterData
-from data01.models import pd1
+
 from data01.models import pd1_time
+from data01.models import pd2
 from datetime import datetime, timedelta
 
 # Create your views here.
@@ -9,18 +9,13 @@ from datetime import datetime, timedelta
 def test(request):
     return render(request,'data01/test.html',{})
 
-def test_title(request):
-    Poster_list=PosterData.objects.exclude(title__exact='')
-    return render(request,'data01/test_title.html',{'Poster_list':Poster_list})
-
-def test_pd1(request):
-    oneday=pd1.objects.exclude(title__exact='')
-    return render(request,'data01/test_pd1.html',{'oneday':oneday})
-
 def test_pd1_time(request):
     time=pd1_time.objects.exclude(title__exact='')
     return render(request,'data01/test_pd1_time.html',{'time':time})
 
+def test_pd2(request):
+    time=pd1_time.objects.exclude(title__exact='')
+    return render(request,'data01/test_pd2.html',{'two':two})
 
 #아래에 있는 함수는 PosterData의 when을 datafield로 변경된 후에 실행가능함.
 def index(request):
