@@ -7,5 +7,6 @@ urlpatterns = [
 
     url(r'^test',views.test),
     url(r'^index',views.index),
+    url(r'^index_tutorial',views.index_tutorial),
 #    url(r'^about',views.about),
 ]

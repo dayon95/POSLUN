@@ -18,7 +18,7 @@ def test_pd2(request):
     return render(request,'data01/test_pd2.html',{'two':two})
 
 #아래에 있는 함수는 PosterData의 when을 datafield로 변경된 후에 실행가능함.
-def index(request):
+def index_tutorial(request):
     #today, tomorrow, this_week에는 오늘, 내일, 이번주의 주 번호가 들어감
     #주 번호는 52주 중 몇번째 주인지 나타내는 번호임
     #이 세개 변수는 python의 datetime 모듈을 사용했음.
@@ -34,8 +34,11 @@ def index(request):
     this_week_list=pd1_time.objects.filter(date__week=this_week)
     #return render(request,'data01/index.html',today_list)
     contents={'date':date, 'today_list':today_list,'tomorrow_list':tomorrow_list,'this_week_list':this_week_list}
-    return render(request,'data01/index.html',contents)
+    return render(request,'data01/index_tutorial.html',contents)
 '''
 def about(request):
     return render(request,'about site')
 '''
+
+def index(request):
+    return render(request,'data01/index.html')
