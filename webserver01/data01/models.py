@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 #import django_filters
-
+#ii
 # Create your models here.
 
 class pd1_time(models.Model): #하루행사 시간
@@ -31,8 +31,12 @@ class pd2(models.Model): #전체 정보
     who = models.CharField(max_length=20, blank=True, null=True)
     where = models.CharField(max_length=20, blank=True, null=True)
 
-    addurl = models.URLField(max_length=100, blank=True, null=True)
+    addway = models.TextField(blank=True, null=True)
+    addurl = models.URLField(blank=True, null=True) #if there is a link use href
+
     imgurl = models.URLField(max_length=100, blank=True, null=True)
+
+    gift = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return self.title
