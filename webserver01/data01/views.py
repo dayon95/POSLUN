@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from data01.models import pd1_time
 from data01.models import pd2
+from data01.models import feedbackpost, feedback
 from datetime import datetime, timedelta
+from data01.forms import feedbackForm
 
 # Create your views here.
 
@@ -35,10 +37,6 @@ def index_tutorial(request):
     #return render(request,'data01/index.html',today_list)
     contents={'date':date, 'today_list':today_list,'tomorrow_list':tomorrow_list,'this_week_list':this_week_list}
     return render(request,'data01/index_tutorial.html',contents)
-'''
-def about(request):
-    return render(request,'about site')
-'''
 
 def index(request):
     today=datetime.today()
@@ -53,10 +51,28 @@ def index(request):
     this_week_list=pd2.objects.filter(startdate__week=this_week)
     contents={'date':date, 'today_list':today_list,'tomorrow_list':tomorrow_list,'this_week_list':this_week_list}
     return render(request,'data01/index.html',contents)
-'''
-def category(request, kind):
-    return render(request,'카테고리에 따른 포스터')
-'''
+
 
 def about(request):
     return render(request,'data01/about.html')
+
+def feedback_index(request):
+    feedback_list = feedbackpost.objects.all()
+    return render(request, 'data01/feedback_index.html', {'feedback_list':feedback_list,})
+
+def feedback_detail(request, pk):
+    feedback_post = feedbackpost.objects.get(pk=pk)
+    return render(request, 'data01/feedback_detail.html', {'feedback_post':feedback_post,})
+
+def feedback_new(request, pk):
+    if request.method == 'POST':
+        form = feedbackForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = feedbackpost.objects.get(pk=pk)
+            comment.save()
+            return redirect('views.feedback_detail', pk)
+    else:
+      form = feedbackForm()
+
+    return render(request, 'data01/feedback_form.html', {'form':form,})

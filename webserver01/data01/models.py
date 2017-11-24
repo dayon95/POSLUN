@@ -40,3 +40,17 @@ class pd2(models.Model): #전체 정보
 
     def __str__(self):
         return self.title
+
+class feedbackpost(models.Model):
+    basepost = models.CharField(max_length=20, default="Add Feedback here")
+
+    def __str__(self):
+        return self.basepost
+
+class feedback(models.Model):
+    post = models.ForeignKey(feedbackpost)
+    name = models.CharField(max_length=10, blank=True, null=True) #who feedbacked
+    message = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.message
