@@ -8,6 +8,16 @@ body {
   font-family:"Jeju Gothic";
   padding-top: 54px;
 }
+
+
+.myfooter{
+  /*https://stackoverflow.com/questions/22970117/bootstrap-footer-full-width-of-page 참고 */
+  position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+}
+
 /*카테고리 텍스트 색깔*/
 a.list-group-item{
   color: black;
