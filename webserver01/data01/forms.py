@@ -1,7 +1,8 @@
 from django import forms
-from .models import feedback
+from data01.models import feedback
 
-class feedbackForm(forms.ModelForm):
+class CommentForm(forms.ModelForm):
+
     class Meta:
         model = feedback
-        fields = ('name', 'message')
+        fields = ('name', 'message',)
