@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from django.db.models import Q
 
 from django import forms
-from data01.forms import CommentForm
+from data01.forms import feedbackForm
 
 # Create your views here.
 
@@ -59,23 +59,24 @@ def index(request):
 def about(request):
     return render(request,'data01/about.html')
 
-def feedback_list(request):
-    posts = feedbackpost.objects.all()
-    return render(request, 'data01/feedback_list.html', {'posts': posts})
+def feedback_index(request):
+    feedback_list = feedbackpost.objects.all()
+    return render(request, 'data01/feedback_index.html', {'feedback_list':feedback_list,})
 
 def feedback_detail(request, pk):
-    post = feedbackpost.objects.get(pk=pk)
-    return render(request, 'data01/feedback_detail.html', {'post': post})
+    feedback_post = feedbackpost.objects.get(pk=pk)
 
-def add_comment_to_post(request, pk):
-    post = feedbackpost.objects.get(pk=pk)
-    if request.method == "POST":
-        form = CommentForm(request.POST)
+    return render(request, 'data01/feedback_detail.html', {'feedback_post':feedback_post,})
+
+def feedback_new(request, pk):
+    if request.method == 'POST':
+        form = feedbackForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
-            comment.post = post
+            comment.post = feedbackpost.objects.get(pk=pk)
             comment.save()
-            return redirect('data01.views.feedback_detail', pk=post.pk)
+            return redirect('detail', pk=pk)
     else:
-        form = CommentForm()
-    return render(request, 'data01/add_comment_to_post.html', {'form': form})
+      form = feedbackForm()
+
+    return render(request, 'data01/feedback_form.html', {'form':form,})

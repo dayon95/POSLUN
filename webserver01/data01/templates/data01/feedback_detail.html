@@ -2,12 +2,12 @@
 
 <h3>ADD FEEDBACK</h3>
 
-<a href="{% url "data01.views.feedback_new" pk=feedback_post.pk %}">GO</a>
+<a href="{% url 'new' feedback_post.pk %}">GO</a>
 
 <ul>
   {% for comment in feedback_post.feedback_set.all %}
     <li>
-      {{ comment.message }}
+      {{ comment.message }} by
       <small> {{comment.name}}, {{comment.createdwhen}} </small>
     </li>
   {% endfor %}

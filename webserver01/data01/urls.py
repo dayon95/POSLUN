@@ -11,8 +11,8 @@ urlpatterns = [
     url(r'^tutorial',views.index_tutorial),
     url(r'^about',views.about),
 
-    url(r'^feedback',views.feedback_list),
-    url(r'^feedback/(?P<pk>\d+)/$', views.feedback_detail, name='feedback_detail'),
-    url(r'^feedback/(?P<pk>\d+)/comment/$', views.add_comment_to_post, name='add_comment_to_post'),
+    url(r'^feedback/$', views.feedback_index),
+    url(r'^feedback/(?P<pk>\d+)/$', views.feedback_detail,name='detail'),
+    url(r'^feedback/(?P<pk>\d+)/new/$', views.feedback_new,name='new'),
 
 ]

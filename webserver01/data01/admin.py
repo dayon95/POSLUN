@@ -8,5 +8,9 @@ from .models import feedbackpost, feedback
 
 admin.site.register(pd1_time)
 admin.site.register(pd2)
-admin.site.register(feedbackpost)
+
+class feedbackpostAdmin(admin.ModelAdmin):
+    list_display=('id','basepost')
+
+admin.site.register(feedbackpost,feedbackpostAdmin)
 admin.site.register(feedback)
