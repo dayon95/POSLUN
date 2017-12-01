@@ -1,9 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from data01.models import pd1_time
 from data01.models import pd2
+from data01.models import feedbackpost, feedback
 from datetime import datetime, timedelta
 from django.db.models import Q
+
+from django import forms
+from data01.forms import CommentForm
 
 # Create your views here.
 
@@ -36,10 +40,6 @@ def index_tutorial(request):
     #return render(request,'data01/index.html',today_list)
     contents={'date':date, 'today_list':today_list,'tomorrow_list':tomorrow_list,'this_week_list':this_week_list}
     return render(request,'data01/index_tutorial.html',contents)
-'''
-def about(request):
-    return render(request,'about site')
-'''
 
 def index(request):
     today=datetime.today()
@@ -54,10 +54,28 @@ def index(request):
 
     contents={'date':date, 'today_list':today_list,'tomorrow_list':tomorrow_list,'this_week_list':this_week_list}
     return render(request,'data01/index.html',contents)
-'''
-def category(request, kind):
-    return render(request,'카테고리에 따른 포스터')
-'''
+
 
 def about(request):
     return render(request,'data01/about.html')
+
+def feedback_list(request):
+    posts = feedbackpost.objects.all()
+    return render(request, 'data01/feedback_list.html', {'posts': posts})
+
+def feedback_detail(request, pk):
+    post = feedbackpost.objects.get(pk=pk)
+    return render(request, 'data01/feedback_detail.html', {'post': post})
+
+def add_comment_to_post(request, pk):
+    post = feedbackpost.objects.get(pk=pk)
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.save()
+            return redirect('data01.views.feedback_detail', pk=post.pk)
+    else:
+        form = CommentForm()
+    return render(request, 'data01/add_comment_to_post.html', {'form': form})

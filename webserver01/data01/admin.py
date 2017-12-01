@@ -4,6 +4,9 @@ from django.contrib import admin
 
 from .models import pd1_time
 from .models import pd2
+from .models import feedbackpost, feedback
 
 admin.site.register(pd1_time)
 admin.site.register(pd2)
+admin.site.register(feedbackpost)
+admin.site.register(feedback)
