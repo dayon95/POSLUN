@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django import forms
 #import django_filters
 #ii
 # Create your models here.
@@ -49,8 +50,8 @@ class feedbackpost(models.Model):
 
 class feedback(models.Model):
     post = models.ForeignKey(feedbackpost)
-    name = models.CharField(max_length=10, blank=True, null=True) #who feedbacked
-    message = models.TextField(blank=True, null=True)
+    name = models.CharField(max_length=10, blank=True, null=False) #who feedbacked
+    message = models.TextField(blank=True, null=False)
 
     def __str__(self):
         return self.message

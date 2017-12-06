@@ -7,9 +7,10 @@ urlpatterns = [
     url(r'^test_pd1_time',views.test_pd2),
 
     url(r'^test',views.test),
-    url(r'^index',views.index),
+    url(r'^index',views.index, name='index'),
     url(r'^tutorial',views.index_tutorial),
-    url(r'^about',views.about),
+    url(r'^about',views.about, name='about'),
+    url(r'^ajax/poster_detail',views.poster_detail,name='poster_detail'),
 
     url(r'^feedback/$', views.feedback_index),
     url(r'^feedback/(?P<pk>\d+)/$', views.feedback_detail,name='detail'),

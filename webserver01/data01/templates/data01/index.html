@@ -25,6 +25,24 @@
 </head>
 
 <body>
+  <!-- test modal-->
+  <div id="myModal" class="modal fade">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">상세 정보</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          </div>
+          <div class="modal-body">
+            ...
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+      </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+  <!-- modal test completed -->
 
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -49,7 +67,7 @@
             <a class="nav-link" href="about.html">About</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Feedback</a>
+            <a class="nav-link" href="feedback/1/new/">Feedback</a>
           </li>
         </ul>
       </div>
@@ -71,6 +89,7 @@
           <a href="#" class="list-group-item">공연</a>
           <a href="#" class="list-group-item">채용/세미나</a>
         </div>
+
 
       </div>
       <!-- /.col-lg-3 -->
@@ -100,9 +119,12 @@
               {% else %}
               <div class="carousel-item">
               {% endif %}
+              <a class="a_carousel_item" id={{pd2.imgurl}} href="">
                 <img class="d-block img-fluid" src="{{pd2.imgurl}}" alt="{{pd2.title}}">
+              </a>
               </div>
             {% endfor %}
+
             <!--
               <div class="carousel-item">
                 <img class="d-block img-fluid" src="http://photo.jtbc.joins.com/news/2016/11/03/20161103150104259.jpg" alt="Second slide">
@@ -195,6 +217,41 @@
   <!-- Bootstrap core JavaScript -->
   <script src='{% static  "vendor/jquery/jquery.min.js " %}'></script>
   <script src='{% static  "vendor/bootstrap/js/bootstrap.bundle.min.js " %}'></script>
+  <script>
+    $('#test_a_tag').click(function(event){
+      event.preventDefault();
+      $('#myModal').modal('toggle');
+    });
+    $(".a_carousel_item").click(function(event){
+      //function(event)에서 event는 이벤트 타입이 저장되는 변수임
+      event.preventDefault();
+      //carousel-inner 안에있는 carousel-item 각각에 대해 a태그를 입력해서 클릭 가능하게 해둠.
+      //근데, 클릭만 되고 링크이동은 안시키려고 위의 문장을 추가해둠.
+      var carousel_id = $(this).attr('id');  //this는 class가 carousel인 DOM이 저장됨
+      //(DOM은 일종의 객체, 아마 this에는 class가 a_carousel_item인 문서가 들어있을것)
+      //attr()는 속성을 반환함. 'id'속성 값을 반환함.
+      //alert(carousel_id);  //연습용
+
+      //http://hsj0511.tistory.com/205 참고
+      //https://simpleisbetterthancomplex.com/tutorial/2016/08/29/how-to-work-with-ajax-request-with-django.html 참고
+
+      $.ajax({
+        url:'/ajax/poster_detail/',
+        data:{
+          'clicked_poster':carousel_id
+        },
+        success: function(data){
+          //alert("!!");
+          //여기서 data는 서버로부터 받아온 data
+          console.log(data);
+          $(".modal-body").html(data.post_html);
+        },
+        error:function (xhr, ajaxOptions, thrownError) {
+        }
+      });
+      $('#myModal').modal('toggle');
+    });
+  </script>
 
 </body>
 

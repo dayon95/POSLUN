@@ -9,6 +9,9 @@ from django.db.models import Q
 from django import forms
 from data01.forms import feedbackForm
 
+from django.template import loader
+from django.http import JsonResponse
+
 # Create your views here.
 
 def test(request):
@@ -48,9 +51,9 @@ def index(request):
     date_KOR=["월","화","수","목","금","토","일"]
     date=date_KOR[today.weekday()]
 
-    today_list=pd2.objects.filter(Q(startdate__lte=today)&(Q(enddate__gte=today)|Q(enddate=None)))
-    tomorrow_list=pd2.objects.filter(Q(startdate__lte=tomorrow)&(Q(enddate__gte=tomorrow)|Q(enddate=None)))
-    this_week_list=pd2.objects.filter(Q(startdate__lte=this_week)&(Q(enddate__gte=today)|Q(enddate=None)))
+    today_list=pd2.objects.filter(Q(startdate__lte=today)&(Q(enddate__gte=today)&~Q(enddate=None)))
+    tomorrow_list=pd2.objects.filter(Q(startdate__lte=tomorrow)&(Q(enddate__gte=tomorrow)&~Q(enddate=None)))
+    this_week_list=pd2.objects.filter(Q(startdate__lte=this_week)&(Q(enddate__gte=today)&~Q(enddate=None)))
 
     contents={'date':date, 'today_list':today_list,'tomorrow_list':tomorrow_list,'this_week_list':this_week_list}
     return render(request,'data01/index.html',contents)
@@ -80,3 +83,15 @@ def feedback_new(request, pk):
       form = feedbackForm()
 
     return render(request, 'data01/feedback_form.html', {'form':form,})
+
+def poster_detail(request):
+    poster_imgurl=request.GET.get('clicked_poster',None)
+    print("요청된 포스터 이미지 링크")
+    print(poster_imgurl)
+    poster=pd2.objects.filter(imgurl=poster_imgurl).first()
+    posts_html=loader.render_to_string('data01/poster_detail.html',{'poster':poster})
+    print("불러온 포스터 정보:")
+    print(poster)
+    data={'post_html':posts_html}
+
+    return JsonResponse(data)
