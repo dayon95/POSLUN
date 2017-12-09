@@ -44,18 +44,106 @@ def index_tutorial(request):
     contents={'date':date, 'today_list':today_list,'tomorrow_list':tomorrow_list,'this_week_list':this_week_list}
     return render(request,'data01/index_tutorial.html',contents)
 
-def index(request):
+def index(request,category = "모든 행사"):
     today=datetime.today()
     tomorrow=today+timedelta(days=1)
     this_week=today+timedelta(days=6)
     date_KOR=["월","화","수","목","금","토","일"]
     date=date_KOR[today.weekday()]
+    categories=["총학생회 행사","동아리 공연","강연","공연","채용"]
 
+    booler=pd2.objects.all
     today_list=pd2.objects.filter(Q(startdate__lte=today)&(Q(enddate__gte=today)&~Q(enddate=None)))
     tomorrow_list=pd2.objects.filter(Q(startdate__lte=tomorrow)&(Q(enddate__gte=tomorrow)&~Q(enddate=None)))
     this_week_list=pd2.objects.filter(Q(startdate__lte=this_week)&(Q(enddate__gte=today)&~Q(enddate=None)))
+    #
+    #print(request.GET)
+    print("index 호출됨")
 
-    contents={'date':date, 'today_list':today_list,'tomorrow_list':tomorrow_list,'this_week_list':this_week_list}
+    query_dict=request.GET
+    print(query_dict)
+
+    q=query_dict.get('q')
+    opt=query_dict.get('opt')
+    checked=query_dict.get('checked')
+    print("q:")
+    print(q)
+    print("opt")
+    print(opt)
+
+
+    if category != "모든 행사":
+        today_list = today_list.filter(kind = category)
+        tomorrow_list = tomorrow_list.filter(kind = category)
+        this_week_list = this_week_list.filter(kind = category)
+        booler=pd2.objects.filter(kind = category)
+    #
+    if checked=='true':
+        if opt=='on':
+            today_list = today_list.filter(gift__isnull=False)
+            tomorrow_list = tomorrow_list.filter(gift__isnull=False)
+            this_week_list = this_week_list.filter(gift__isnull=False)
+        if q=='' or q is None:
+            contents={'date':date, 'today_list':today_list,'tomorrow_list':tomorrow_list,'this_week_list':this_week_list, 'booler':booler, 'category':category, 'categories':categories, 'opt':opt,}
+            posts_html=loader.render_to_string('data01/index_container.html',contents)
+            return JsonResponse({'post_html':posts_html})
+        if not (q=='' or q is None):
+            print('searching!!')
+            today_list = today_list.filter(title__icontains=q)
+            tomorrow_list = tomorrow_list.filter(title__icontains=q)
+            this_week_list = this_week_list.filter(title__icontains=q)
+            print(q)
+            contents={'q':q, 'this_week_list':this_week_list, 'category':category, 'categories':categories,}
+            posts_html=loader.render_to_string('data01/search_container.html',contents)
+            return JsonResponse({'post_html':posts_html})
+
+    else:
+        if not (q=='' or q is None):
+            print("search")
+            today_list = today_list.filter(title__icontains=q)
+            tomorrow_list = tomorrow_list.filter(title__icontains=q)
+            this_week_list = this_week_list.filter(title__icontains=q)
+            #return redirect('search',query)
+            return render(request,'data01/search.html',{'q':q,'this_week_list':this_week_list, 'category':category, 'categories':categories,})
+
+
+    '''if opt=='on':
+        today_list = today_list.filter(gift__isnull=False)
+        tomorrow_list = tomorrow_list.filter(gift__isnull=False)
+        this_week_list = this_week_list.filter(gift__isnull=False)
+        if q=='' or q is None:
+            contents={'date':date, 'today_list':today_list,'tomorrow_list':tomorrow_list,'this_week_list':this_week_list, 'booler':booler, 'category':category, 'categories':categories, 'opt':opt,}
+            posts_html=loader.render_to_string('data01/index_container.html',contents)
+            return JsonResponse({'post_html':posts_html})
+'''
+
+    '''if not (q=='' or q is None):
+        print('searching!!')
+        today_list = today_list.filter(title__icontains=q)
+        tomorrow_list = tomorrow_list.filter(title__icontains=q)
+        this_week_list = this_week_list.filter(title__icontains=q)
+        return render(request,'data01/search.html',{'this_week_list':this_week_list, 'category':category, 'categories':categories,})
+'''
+    '''query = request.GET.get("q")
+    if query:
+        print("search")
+        today_list = today_list.filter(title__icontains=query)
+        tomorrow_list = tomorrow_list.filter(title__icontains=query)
+        this_week_list = this_week_list.filter(title__icontains=query)
+        #return redirect('search',query)
+        return render(request,'data01/search.html',{'this_week_list':this_week_list, 'category':category, 'categories':categories,})
+    #
+    opt = request.GET.get("opt")
+    if opt:
+        print("option")
+        today_list = today_list.filter(gift__isnull=False)
+        tomorrow_list = tomorrow_list.filter(gift__isnull=False)
+        this_week_list = this_week_list.filter(gift__isnull=False)
+        contents={'date':date, 'today_list':today_list,'tomorrow_list':tomorrow_list,'this_week_list':this_week_list, 'booler':booler, 'category':category, 'categories':categories, 'opt':opt,}
+        posts_html=loader.render_to_string('data01/index_container.html',contents)
+        return JsonResponse({'post_html':posts_html})
+    '''
+    contents={'date':date, 'today_list':today_list,'tomorrow_list':tomorrow_list,'this_week_list':this_week_list, 'booler':booler, 'category':category, 'categories':categories, 'opt':opt}
     return render(request,'data01/index.html',contents)
 
 
@@ -73,12 +161,14 @@ def feedback_detail(request, pk):
 
 def feedback_new(request, pk):
     if request.method == 'POST':
+        print("add feedback")
         form = feedbackForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
             comment.post = feedbackpost.objects.get(pk=pk)
             comment.save()
-            return redirect('detail', pk=pk)
+            #return redirect('detail', pk=pk)
+            return redirect('index')
     else:
       form = feedbackForm()
 
@@ -86,8 +176,8 @@ def feedback_new(request, pk):
 
 def poster_detail(request):
     poster_imgurl=request.GET.get('clicked_poster',None)
-    print("요청된 포스터 이미지 링크")
-    print(poster_imgurl)
+    #print("요청된 포스터 이미지 링크")
+    #print(poster_imgurl)
     poster=pd2.objects.filter(imgurl=poster_imgurl).first()
     posts_html=loader.render_to_string('data01/poster_detail.html',{'poster':poster})
     print("불러온 포스터 정보:")
@@ -95,3 +185,9 @@ def poster_detail(request):
     data={'post_html':posts_html}
 
     return JsonResponse(data)
+
+'''def poster_search(request,search):
+    whole_poster=pd2.objects.all()
+    search_result=whole_poster.filter(title__icontains=search)
+    return render(request,'data01/search.html',{'search':search, 'search_list':search_result})
+'''

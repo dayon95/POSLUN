@@ -1,7 +1,8 @@
 *.pyc
 *~
 __pycache__
-가상환경이름
+MyPython
 db.sqlite3
 /static
 .DS_Store
+.gitignore
